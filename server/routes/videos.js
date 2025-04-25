@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 const Video = require('../models/Video');
 const Comment = require('../models/Comment');
 
-// Get all videos with optional search and filter
+
 router.get('/', async (req, res) => {
     try {
         const { search, category } = req.query;
@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Get a single video
+
 router.get('/:id', async (req, res) => {
     try {
         const video = await Video.findById(req.params.id)
@@ -47,11 +47,9 @@ router.get('/:id', async (req, res) => {
         if (!video) {
             return res.status(404).json({ message: 'Video not found' });
         }
-
-        // Increment views
+     
         video.views += 1;
         await video.save();
-
         res.json(video);
     } catch (err) {
         console.error(err);
@@ -59,7 +57,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Create a new video (protected route)
+
 router.post('/', auth, async (req, res) => {
     try {
         const { title, description, thumbnailUrl, videoUrl, category, channelId } = req.body;
@@ -76,7 +74,6 @@ router.post('/', auth, async (req, res) => {
 
         await video.save();
 
-        // Add video to channel's videos array
         const channel = await Channel.findById(channelId);
         if (channel) {
             channel.videos.push(video._id);
@@ -90,7 +87,6 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-// Like a video
 router.put('/:id/like', auth, async (req, res) => {
     try {
         const video = await Video.findById(req.params.id);
@@ -108,7 +104,6 @@ router.put('/:id/like', auth, async (req, res) => {
     }
 });
 
-// Dislike a video
 router.put('/:id/dislike', auth, async (req, res) => {
     try {
         const video = await Video.findById(req.params.id);
@@ -126,7 +121,6 @@ router.put('/:id/dislike', auth, async (req, res) => {
     }
 });
 
-// Add a comment to a video
 router.post('/:id/comments', auth, async (req, res) => {
     try {
         const video = await Video.findById(req.params.id);

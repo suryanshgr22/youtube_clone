@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const Comment = require('../models/Comment');
 
-// Get all comments for a video
+
 router.get('/video/:videoId', async (req, res) => {
     try {
         const comments = await Comment.find({ video: req.params.videoId })
@@ -17,7 +17,7 @@ router.get('/video/:videoId', async (req, res) => {
     }
 });
 
-// Update a comment
+
 router.put('/:id', auth, async (req, res) => {
     try {
         const comment = await Comment.findById(req.params.id);
@@ -26,7 +26,7 @@ router.put('/:id', auth, async (req, res) => {
             return res.status(404).json({ message: 'Comment not found' });
         }
 
-        // Check if the user is the owner of the comment
+        
         if (comment.user.toString() !== req.user._id.toString()) {
             return res.status(403).json({ message: 'Not authorized' });
         }
@@ -44,7 +44,7 @@ router.put('/:id', auth, async (req, res) => {
     }
 });
 
-// Delete a comment
+
 router.delete('/:id', auth, async (req, res) => {
     try {
         const comment = await Comment.findById(req.params.id);
@@ -53,7 +53,6 @@ router.delete('/:id', auth, async (req, res) => {
             return res.status(404).json({ message: 'Comment not found' });
         }
 
-        // Check if the user is the owner of the comment
         if (comment.user.toString() !== req.user._id.toString()) {
             return res.status(403).json({ message: 'Not authorized' });
         }
@@ -66,7 +65,7 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
-// Like a comment
+
 router.put('/:id/like', auth, async (req, res) => {
     try {
         const comment = await Comment.findById(req.params.id);

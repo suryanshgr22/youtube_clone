@@ -54,7 +54,6 @@ const videoSchema = new mongoose.Schema({
     }
 });
 
-// Index for search functionality
 videoSchema.index({ title: 'text', description: 'text' });
 
 module.exports = mongoose.model('Video', videoSchema); 

@@ -3,16 +3,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-// Load environment variables
+
 dotenv.config();
 
 const app = express();
-
-// Middleware
+// app.use(bodyParser());
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
+
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/youtube-clone', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -20,12 +19,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/youtube-c
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/videos', require('./routes/videos'));
 app.use('/api/comments', require('./routes/comments'));
 
-// Error handling middleware
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: 'Something went wrong!' });
